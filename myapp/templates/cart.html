@@ -1,0 +1,100 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+   <head>
+      
+   </head>
+   <body class="sub_page">
+      <div class="hero_area">
+      
+      </div>
+      <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full">
+                     <h3>Wishlist Items</h3>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+      <!-- product section -->
+      <section class="product_section layout_padding">
+         <div class="container">
+            <div class="heading_container heading_center">
+               {% if carts %}
+               <h2>
+                  My <span>Cart</span>
+               </h2>
+              
+            </div>
+            <div class="row">
+               {% for i in carts %}
+               <div class="col-sm-6 col-md-6 col-lg-4">
+                  <div class="box">
+                    
+                     <div class="img-box">
+                        <img src="{{i.product.product_image.url}}" alt="">
+                     </div>
+                     <div class="detail-box">
+                        <h5>
+                           Product Type : {{i.product.product_type}}
+                        </h5>
+                     </div>
+                     <div class="detail-box">
+                        <h5>
+                           Product Price : {{i.product_price}}
+                        </h5>
+                     </div>
+                     <div class="detail-box">
+                        <h5>
+                           <form method="POST" action="{% url 'change_qty' %}">
+                              {% csrf_token %}
+                              <input type="hidden" name="pk" value="{{i.pk}}">
+                              Product Quantity : <input type="number" name="product_qty" value="{{i.product_qty}}" min="1" max="10" style="width:30%;height:10px;" onchange="this.form.submit();">
+                           </form>
+                        </h5>
+                     </div>
+                     <div class="detail-box">
+                        <h5>
+                           Total Price : {{i.total_price}}
+                        </h5>
+                     </div>
+                  </div>
+               </div>
+               {% endfor %}
+            </div>
+            
+            <h2>Net Price : {{net_price}}</h2>
+            
+            <form name="payment" method="post" action="{% url 'payment' %}">
+               {% csrf_token %}
+               <input type="hidden" name="net_price" value="{{net_price}}">
+               <input type="submit" value="Proceed For Payment" class="btn btn-primary">
+            </form>
+            <!-- <form action="{% url 'success' %}" method="post">  
+               {% csrf_token %}  
+                  <script src="https://checkout.stripe.com/checkout.js"
+                     class="stripe-button"          
+                     data-key="{{ key }}"          
+                     data-description="A Django Charge"          
+                     data-amount="500"          
+                     data-locale="auto">
+                  </script>
+            </form> -->
+         </div>
+      </section>
+      <!-- end product section -->
+       {% else %}
+               <h2>
+                  No Items In <span>Cart</span>
+               </h2>
+               {% endif %}
+   </body>
+</html>
+{% endblock %}

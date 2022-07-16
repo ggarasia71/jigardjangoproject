@@ -1,0 +1,55 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+   <head>
+      
+   </head>
+   <body class="sub_page">
+      <div class="hero_area">
+      
+      </div>
+      <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full">
+                     <h3>Payment Process</h3>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+      <!-- why section -->
+      <section class="why_section layout_padding">
+         <div class="container">
+         
+            <div class="row">
+               <div class="col-lg-8 offset-lg-2">
+                  <div class="full">
+                     <h3>Proceed Payment For {{net_price}}</h3>
+                     <form action="{% url 'success' %}" method="post">  
+                        {% csrf_token %}
+                        <input type="hidden" name="net_price" value="{{net_price}}">
+                        <script src="https://checkout.stripe.com/checkout.js"
+                           class="stripe-button"
+                           currency="inr"          
+                           data-key="{{ key }}"          
+                           data-description="Payment Gateway"          
+                           data-amount="{{net_price}}"          
+                           data-locale="auto">
+                        </script>   
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end why section -->
+     
+   </body>
+</html>
+{% endblock %}
